@@ -7,7 +7,7 @@ app = FastAPI()
 
 # --- TUS LLAVES (LLÉNALAS OTRA VEZ) ---
 VERIFY_TOKEN = "SECRETO_CONTALINK_2026"
-WHATSAPP_TOKEN = "EAAG..."  # <--- ¡EAAWj4hK4vRkBQPvt4YoqAOBm9IosUAhisnc07C3Ozrh9r4ZB4NJimxJHPQZA2ItbnaqpcIflAIZA5iKMbZA83b88fJz8qPCwQm2arQC3SjMt6txqVcEKtTLY3yaFYXd05OFWmryMyFQzUUkmrZCmGmAfuCvsAboO2l0YM1kd3TMa0kzwUZAAZBeMOIH8yBZBVNCxUXeXrZCbp2H5ks2s35VGjFw04jrN3c5o5tXg6FSQGZCTB9bDpZCVPDrCbs9K567t0fsyVzPcPNfdQDoYVltc8K3lDkSQuizpxStebEpoFEZD!
+WHATSAPP_TOKEN = "EAAG..."  # <--- ¡EAAWj4hK4vRkBQPezLTchI09ovFjkqSI5P1bz7c5oj9EkjTExZCOkutT8ZAbUihiU2N75fnziAizQSRIDZCQXRdaAh4qRPYlBQQshXLjV4AtFQ8QmssnSkXgYX2QKskxKtLaIr4CcQ3XBUcCGsADEne9t1rCkVncvZC4eNoxOWGZCNMsZC1z2WcRN3wK9oVfvYqihZCSQRbDDMjh7gWVFJDQvmZAnEn2ZBjvJqvrjKTUdRQyy5gYIXRIwCdKVeCI7LvwZC4KCGPv3skgmsQGNSIpPdnk4q9rXCdyhBX1Y87qQZDZD!
 PHONE_NUMBER_ID = "880..."  # <--- ¡880046795195412!
 # --------------------------------------
 
@@ -68,3 +68,4 @@ def send_whatsapp_message(to_number, message_text):
     }
     response = requests.post(url, json=data, headers=headers)
     print("📤 INTENTO DE RESPUESTA:", response.json())
+
