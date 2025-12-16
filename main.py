@@ -1,48 +1,60 @@
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import PlainTextResponse
 import requests
+import json 
 
 app = FastAPI()
 
-# --- TUS LLAVES (CÁMBIALAS) ---
+# --- TUS LLAVES (LLÉNALAS OTRA VEZ) ---
 VERIFY_TOKEN = "SECRETO_CONTALINK_2026"
-WHATSAPP_TOKEN = "EAAWj4hK4vRkBQPvt4YoqAOBm9IosUAhisnc07C3Ozrh9r4ZB4NJimxJHPQZA2ItbnaqpcIflAIZA5iKMbZA83b88fJz8qPCwQm2arQC3SjMt6txqVcEKtTLY3yaFYXd05OFWmryMyFQzUUkmrZCmGmAfuCvsAboO2l0YM1kd3TMa0kzwUZAAZBeMOIH8yBZBVNCxUXeXrZCbp2H5ks2s35VGjFw04jrN3c5o5tXg6FSQGZCTB9bDpZCVPDrCbs9K567t0fsyVzPcPNfdQDoYVltc8K3lDkSQuizpxStebEpoFEZD"
-PHONE_NUMBER_ID = "880046795195412"
-# ------------------------------
+WHATSAPP_TOKEN = "EAAG..."  # <--- ¡EAAWj4hK4vRkBQPvt4YoqAOBm9IosUAhisnc07C3Ozrh9r4ZB4NJimxJHPQZA2ItbnaqpcIflAIZA5iKMbZA83b88fJz8qPCwQm2arQC3SjMt6txqVcEKtTLY3yaFYXd05OFWmryMyFQzUUkmrZCmGmAfuCvsAboO2l0YM1kd3TMa0kzwUZAAZBeMOIH8yBZBVNCxUXeXrZCbp2H5ks2s35VGjFw04jrN3c5o5tXg6FSQGZCTB9bDpZCVPDrCbs9K567t0fsyVzPcPNfdQDoYVltc8K3lDkSQuizpxStebEpoFEZD!
+PHONE_NUMBER_ID = "880..."  # <--- ¡880046795195412!
+# --------------------------------------
 
 @app.get("/webhook")
 async def verify_webhook(request: Request):
-    """Verifica que Facebook sea quien nos toca la puerta"""
     mode = request.query_params.get("hub.mode")
     token = request.query_params.get("hub.verify_token")
     challenge = request.query_params.get("hub.challenge")
-
     if mode == "subscribe" and token == VERIFY_TOKEN:
         return PlainTextResponse(content=challenge, status_code=200)
     raise HTTPException(status_code=403, detail="Token incorrecto")
 
 @app.post("/webhook")
 async def receive_message(request: Request):
-    """Recibe mensajes y responde"""
     try:
         data = await request.json()
         
-        # Revisamos si hay un mensaje real
-        if "messages" in data["entry"][0]["changes"][0]["value"]:
-            message_data = data["entry"][0]["changes"][0]["value"]["messages"][0]
-            phone_number = message_data["from"] # El número del cliente
-            text_body = message_data["text"]["body"] # Lo que escribió
-            
-            # --- LÓGICA DE RESPUESTA ---
-            respuesta = f"🤖 Hola, soy DEDU. Recibí tu mensaje: '{text_body}'"
-            send_whatsapp_message(phone_number, respuesta)
-            
+        # 1. IMPRIMIR LO QUE LLEGA (CÁMARA DE SEGURIDAD)
+        print("📨 PAQUETE RECIBIDO:", json.dumps(data))
+        
+        # Navegamos el JSON con cuidado
+        if "entry" in data:
+            for entry in data["entry"]:
+                for change in entry["changes"]:
+                    value = change["value"]
+                    
+                    # ¿Es un mensaje real?
+                    if "messages" in value:
+                        message_data = value["messages"][0]
+                        phone_number = message_data["from"]
+                        text_body = message_data["text"]["body"]
+                        
+                        print(f"👤 MENSAJE DETECTADO de {phone_number}: {text_body}")
+                        
+                        # Intentar responder
+                        send_whatsapp_message(phone_number, f"🤖 DEDU te escucha: {text_body}")
+                    
+                    # ¿Es solo un aviso de visto/entregado?
+                    elif "statuses" in value:
+                        print("ℹ️ Solo es un aviso de estado (visto/entregado). Ignorando.")
+
         return {"status": "recibido"}
     except Exception as e:
-        return {"status": "error", "detail": str(e)}
+        print(f"❌ ERROR EN EL CÓDIGO: {str(e)}")
+        return {"status": "error"}
 
 def send_whatsapp_message(to_number, message_text):
-    """Función para enviar el mensaje a WhatsApp"""
     url = f"https://graph.facebook.com/v21.0/{PHONE_NUMBER_ID}/messages"
     headers = {
         "Authorization": f"Bearer {WHATSAPP_TOKEN}",
@@ -55,10 +67,4 @@ def send_whatsapp_message(to_number, message_text):
         "text": {"body": message_text}
     }
     response = requests.post(url, json=data, headers=headers)
-    print("📢 ERROR DE FACEBOOK:", response.json())
-    
-    return response.json()
-
-
-
-
+    print("📤 INTENTO DE RESPUESTA:", response.json())
