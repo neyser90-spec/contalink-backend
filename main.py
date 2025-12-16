@@ -6,8 +6,8 @@ app = FastAPI()
 
 # --- TUS LLAVES (CÁMBIALAS) ---
 VERIFY_TOKEN = "SECRETO_CONTALINK_2026"
-WHATSAPP_TOKEN = "PEGA_AQUI_TU_TOKEN_LARGO_DE_FACEBOOK"
-PHONE_NUMBER_ID = "PEGA_AQUI_TU_ID_DE_TELEFONO"
+WHATSAPP_TOKEN = "EAAWj4hK4vRkBQPvt4YoqAOBm9IosUAhisnc07C3Ozrh9r4ZB4NJimxJHPQZA2ItbnaqpcIflAIZA5iKMbZA83b88fJz8qPCwQm2arQC3SjMt6txqVcEKtTLY3yaFYXd05OFWmryMyFQzUUkmrZCmGmAfuCvsAboO2l0YM1kd3TMa0kzwUZAAZBeMOIH8yBZBVNCxUXeXrZCbp2H5ks2s35VGjFw04jrN3c5o5tXg6FSQGZCTB9bDpZCVPDrCbs9K567t0fsyVzPcPNfdQDoYVltc8K3lDkSQuizpxStebEpoFEZD"
+PHONE_NUMBER_ID = "880046795195412"
 # ------------------------------
 
 @app.get("/webhook")
@@ -56,4 +56,5 @@ def send_whatsapp_message(to_number, message_text):
     }
     response = requests.post(url, json=data, headers=headers)
     return response.json()
+
 
