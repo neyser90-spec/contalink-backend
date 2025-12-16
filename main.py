@@ -55,9 +55,10 @@ def send_whatsapp_message(to_number, message_text):
         "text": {"body": message_text}
     }
     response = requests.post(url, json=data, headers=headers)
-    print("RESPUESTA DE FACEBOOK:", response.json())
+    print("📢 ERROR DE FACEBOOK:", response.json())
     
     return response.json()
+
 
 
 
