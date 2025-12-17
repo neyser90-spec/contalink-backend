@@ -12,7 +12,7 @@ app = FastAPI()
 
 # --- TUS LLAVES ACTUALIZADAS (16 Diciembre) ---
 VERIFY_TOKEN = "SECRETO_CONTALINK_2026"
-WHATSAPP_TOKEN = "EAAWj4hK4vRkBQGApKQ2HicZBQtkFHERBhEVduP5vl6xdSkoZB9EezYKF8t0W8kgW0PKvHpUKD8CpsDUWavxZBFono4W4nAG0SvYriVhtxdKG7OOZC1SieI4cMDDDqR900QuUQaXbdYVep5AJNb78Se3CN0aaEJM0MBoZBN8qNiy1ZATziiAueZAX3elLPZC8KnaCggtp1GIkwh8v2i9GZAjK3Dw5i7OD4x0TSmfpDGtokwBFlf3UIOjD3AVKrc5ACJAJuZCCuK7zDubsViWlQ2X5J74qlNta4VZAp5nJfDZBVgZDZD"
+WHATSAPP_TOKEN = "EAAWj4hK4vRkBQGCHjrQXlTrcRvRLAmwoLBjHJgLBvkv94aDcAtRkOT9qjb5oxT0AOfUwOmCR4sABIZCu8ua4rjxWgTki9md98SH0FcpJ3HI51JIkKqFWVZAcepU0Yvb9lEy9VVzTueAWTl7z06GzkouzwNqTJ7GoHg62LKQm4YXAZBXeUBET5ZCu36gM3gZAsQ2W1shUEJzbCjvYaeCetTZAOqJAtuxBM5qpM7nIMIJIM5RJFlJNqp61Dq1MvJe0SlKvsgHfCvBHpxp9BYSZC1lhynpNg7fvSogugZDZD"
 PHONE_NUMBER_ID = "880046795195412"
 # ----------------------------------------------
 
@@ -78,3 +78,4 @@ def send_whatsapp_message(to_number, message_text):
     
     # Imprimir si tuvo éxito o error
     logger.info(f"📤 RESPUESTA DE META: {response.json()}")
+
